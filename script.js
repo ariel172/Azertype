@@ -1,27 +1,54 @@
-// Déclaration du tableau contenant la liste des mots proposés à l'utilisateur
+// Déclaration du tableau contenant la liste des mots et phrases proposés à l'utilisateur
 const listeMots = ["Cachalot", "Pétunia", "Serviette"]
 const listePhrases = ["Pas de panique !", "La vie, l’univers et le reste", "Merci pour le poisson"]
-let choix =""
-let score = 0
 
-
-while (choix !== "mots" && choix !== "phrases") {
-    choix = prompt("tapez : mots ou  phrases  :")
+//affiche le résultat du joueur
+function afficherResultat(score,nbMotsPoposes){
+    console.log("Votre score est de " + score + " sur " + nbMotsPoposes)
 }
 
-   if(choix === "mots"){
-        for( let i =0; i < listeMots.length; i++){
-            let motUtilisateur = prompt('Entrez le mot : ' + listeMots[i])
-            if (motUtilisateur === listeMots[i]){
-        score++
+
+/*cette fonction demande à l’utilisateur s’il veut jouer 
+avec des phrases ou des mots*/
+
+function choisirPhrasesOuMots(){
+    //tant que l'utilisateur n'a pas choisi entre mots et phrases, on lui demande de faire un choix
+    choix = prompt("Avec quelle liste désirez-vous jouer : 'mots' ou 'phrases' ?")
+    while (choix !== "mots" && choix !== "phrases") {
+        choix = prompt("Avec quelle liste désirez-vous jouer : 'mots' ou 'phrases' ?")
     }
-    }}else {
-         for( let i =0; i < listePhrases.length; i++){
-            let motUtilisateur = prompt('Entrez la phrase : ' + listePhrases[i])
-        if (motUtilisateur === listePhrases[i]){
-        score++
-        }   
+    return choix
+}
+
+/*la boucle for qui propose les mots/phrases au joueur*/
+
+function lancerBoucleDeJeu(listePropositions){
+    let score = 0
+    for( let i = 0; i < listePropositions.length; i++){
+        let motUtilisateur = prompt("Entrez les mots/phrases : " + listePropositions[i])
+        if (motUtilisateur === listePropositions[i]){
+            score++
+        }
     }
+    return score
+}
+
+/* cette fonction sera la fonction principale, 
+c’est elle qui s’occupe de lancer toutes les autres
+*/
+function lancerJeu(){
+    let choix = choisirPhrasesOuMots()
+    let score = 0
+    let nbMotsPoposes = 0
+
+    if(choix === "mots"){
+        score = lancerBoucleDeJeu(listeMots)
+        nbMotsPoposes = listeMots.length
+    }else{
+        score = lancerBoucleDeJeu(listePhrases)
+        nbMotsPoposes = listePhrases.length
     }
 
-console.log("Votre score est de " + score + " sur 3")
+    afficherResultat(score,nbMotsPoposes)
+}
+lancerJeu()
