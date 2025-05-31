@@ -1,6 +1,8 @@
 //affiche le résultat du joueur
 function afficherResultat(score,nbMotsPoposes){
-    console.log("Votre score est de " + score + " sur " + nbMotsPoposes)
+    let zoneScore = document.querySelector(".zoneScore span")
+    let affichageScore = `${score} / ${nbMotsPoposes}`
+    zoneScore.textContent = affichageScore
 }
 
 
