@@ -1,51 +1,44 @@
-//affiche le résultat du joueur
-function afficherResultat(score,nbMotsPoposes){
-    let zoneScore = document.querySelector(".zoneScore span")
-    let affichageScore = `${score} / ${nbMotsPoposes}`
-    zoneScore.textContent = affichageScore
+function afficherResultat(score, nbMotsProposes) {
+    // Récupération de la zone dans laquelle on va écrire le score
+    let spanScore = document.querySelector(".zoneScore span")
+    // Ecriture du texte
+    let affichageScore = `${score} / ${nbMotsProposes}` 
+    // On place le texte à l'intérieur du span. 
+    spanScore.innerText = affichageScore
 }
 
-
-/*cette fonction demande à l’utilisateur s’il veut jouer 
-avec des phrases ou des mots*/
-
-function choisirPhrasesOuMots(){
-    //tant que l'utilisateur n'a pas choisi entre mots et phrases, on lui demande de faire un choix
-    choix = prompt("Avec quelle liste désirez-vous jouer : 'mots' ou 'phrases' ?")
-    while (choix !== "mots" && choix !== "phrases") {
-        choix = prompt("Avec quelle liste désirez-vous jouer : 'mots' ou 'phrases' ?")
-    }
-    return choix
+function afficherProposition(proposition) {
+    let zoneProposition = document.querySelector(".zoneProposition")
+    zoneProposition.innerText = proposition
 }
 
-/*la boucle for qui propose les mots/phrases au joueur*/
-
-function lancerBoucleDeJeu(listePropositions){
+/**
+ * Cette fonction lance le jeu. 
+ * Elle demande à l'utilisateur de choisir entre "mots" et "phrases" et lance la boucle de jeu correspondante
+ */
+function lancerJeu() {
+    // Initialisations
     let score = 0
-    for( let i = 0; i < listePropositions.length; i++){
-        let motUtilisateur = prompt("Entrez les mots/phrases : " + listePropositions[i])
-        if (motUtilisateur === listePropositions[i]){
+    let i = 0
+
+    let btnValiderMot = document.getElementById("btnValiderMot")
+    let inputEcriture = document.getElementById("inputEcriture")
+    afficherProposition(listeMots[i])
+    btnValiderMot.addEventListener("click", () => {
+        if (inputEcriture.value === listeMots[i]) {
             score++
         }
-    }
-    return score
-}
+        i++
+        afficherResultat(score, i)
+        inputEcriture.value = ''
+        if (listeMots[i] === undefined) {
+            afficherProposition("Le jeu est fini")
+            btnValiderMot.disabled = true
+        } else {
+            afficherProposition(listeMots[i])
+        }
+        
+    })
 
-/* cette fonction sera la fonction principale, 
-c’est elle qui s’occupe de lancer toutes les autres
-*/
-function lancerJeu(){
-    let choix = choisirPhrasesOuMots()
-    let score = 0
-    let nbMotsPoposes = 0
-
-    if(choix === "mots"){
-        score = lancerBoucleDeJeu(listeMots)
-        nbMotsPoposes = listeMots.length
-    }else{
-        score = lancerBoucleDeJeu(listePhrases)
-        nbMotsPoposes = listePhrases.length
-    }
-
-    afficherResultat(score,nbMotsPoposes)
+    afficherResultat(score, i)
 }
